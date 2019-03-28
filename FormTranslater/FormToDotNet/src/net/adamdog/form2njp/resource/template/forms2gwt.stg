@@ -1,0 +1,382 @@
+group forms2gwt;
+
+mainpageTpl(module,packageprefix,classname,windowscode,canvasescode,blockscode,useDefaultMenu,useSmartbar,useCustomizedMenu,mainmenu,customizedMenuCodes) ::= <<
+package <packageprefix>client;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.HorizontalSplitPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.VerticalSplitPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.TreeItem;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.DecoratedTabPanel;
+
+
+public class <classname> implements EntryPoint {
+
+	public void onModuleLoad() {
+		Window.addResizeHandler(OracleFormsSupportFunctions.defaultResizeHandler);
+		OracleFormsSupportFunctions.WindowMaximize();  
+
+<canvasescode>
+<blockscode>
+<windowscode>
+                <if(useDefaultMenu)>
+		final OracleFormsDefaultMenuPanel defaultMenu = new OracleFormsDefaultMenuPanel();
+		RootPanel.get("menuContainer").add(defaultMenu);
+                <endif>
+                <if(useSmartbar)>
+		final OracleFormsSmartbarPanel smartbar = new OracleFormsSmartbarPanel();
+		RootPanel.get("smartbarContainer").add(smartbar);
+                <endif>
+                <if(useCustomizedMenu)>
+<customizedMenuCodes>
+		final SimplePanel customizedMenu = new SimplePanel();
+		customizedMenu.add(<mainmenu>);
+		RootPanel.get("menuContainer").add(customizedMenu);
+                <endif>
+	}
+        
+		  /**
+		   * Create a static tree with some data in it.
+		   *
+		   * @return the new tree
+		   */
+		  private Tree createStaticTree() {
+
+		    Tree staticTree = new Tree();
+
+		    TreeItem transportItem = staticTree.addItem("Transport");
+		    TreeItem carItem = transportItem.addItem("Car");
+		    carItem.addItem("Honda");
+		    carItem.addItem("Mazda");
+		    TreeItem planeItem = transportItem.addItem("Plane");
+		    planeItem.addItem("Boeing 747");
+		    planeItem.addItem("Boeing 757");
+		    TreeItem bikeItem = transportItem.addItem("Bike"); 
+
+		    return staticTree;
+		  }
+
+}
+
+>>
+
+canvasTpl(canvas,canvasname,graphicsescode,backgroundimage,backgroundimagewidth,backgroundimageheight,isCanvasTypeContent,isCanvasTypeStacked,isCanvasTypeTab,tabconvaswidth,tabconvasheight,tabconvascode) ::= <<
+		<if(isCanvasTypeContent)>
+		final AbsolutePanel <canvasname> = new AbsolutePanel();
+		<canvasname>.getElement().setId("<canvasname>");
+		DOM.setStyleAttribute(<canvasname>.getElement(), "position", ""); 
+		<if(backgroundimage)>
+		final Image <canvasname>backimage =new Image("<backgroundimage>");
+		<canvasname>backimage.setSize("<backgroundimagewidth>", "<backgroundimageheight>");
+		<canvasname>.add(<canvasname>backimage);
+		<endif>
+                <endif>
+                <if(isCanvasTypeStacked)>
+		final AbsolutePanel <canvasname> = new AbsolutePanel();
+		<canvasname>.getElement().setId("<canvasname>");
+		DOM.setStyleAttribute(<canvasname>.getElement(), "position", ""); 
+                <if(backgroundimage)>
+		final Image <canvasname>backimage =new Image("<backgroundimage>");
+		<canvasname>backimage.setSize("<backgroundimagewidth>", "<backgroundimageheight>");
+		<canvasname>.add(<canvasname>backimage);
+		<endif>
+                <endif>
+                <if(isCanvasTypeTab)>	    
+		final DecoratedTabPanel <canvasname> = new DecoratedTabPanel();
+		<canvasname>.setWidth("<tabconvaswidth>px");
+		<canvasname>.setHeight("<tabconvasheight>px");
+		DOM.setStyleAttribute(<canvasname>.getElement(), "position", ""); 		
+		<canvasname>.setAnimationEnabled(false);
+                <tabconvascode>
+                <canvasname>.selectTab(0);
+                <endif>
+                
+<graphicsescode>                
+>>
+
+graphicsTpl(graphics,canvasname, graphicsname,graphicswidth,graphicsheight,graphicsx,graphicsy, imgfilename) ::= <<
+		final Image <graphicsname> = new Image("<imgfilename>");
+		<graphicsname>.setSize("<graphicswidth>", "<graphicsheight>");
+		<canvasname>.add(<graphicsname>, <graphicsx>, <graphicsy>);
+                
+>>
+
+blockitemTpl(block,blockitem,blockitemname,canvasname,blockitemx,blockitemy,blockitemwidth,blockitemheight,hasprompt,promptx,prompty, initialize, displaycount, itemno,prompthide, promptfirst, promptall,isHierarchicalTreeItemType,isTextItemItemType_OR_isDisplayItemItemType,isCheckboxItemType, isDisplayItemItemType, isImageItemType,isListItemItemType,isPushButtonItemType,isRadioGroupItemType,isTextItemItemType,blockitemfontfamily,blockitemfontsize,blockitempromptfontfamily,blockitempromptfontsize,buttonlabel,liststyle,checkboxItemLabel,radiobuttonGroup,radiobuttonItemLabel,radiobuttonCount,radiobuttonNo)  ::= <<
+                <if(isTextItemItemType_OR_isDisplayItemItemType)>
+                <if(initialize)>
+		final TextBox[] <blockitemname> = new TextBox[<displaycount>];
+		<if(promptfirst)>
+		final Label[] <blockitemname>Prompt = new Label[1];
+                <endif>
+		<if(promptall)>
+		final Label[] <blockitemname>Prompt = new Label[<displaycount>];
+                <endif>
+                <endif>
+		<blockitemname>[<itemno>] = new TextBox();
+		<blockitemname>[<itemno>].setSize("<blockitemwidth>", "<blockitemheight>");
+                <if(isDisplayItemItemType)>
+                <blockitemname>[<itemno>].setReadOnly(true);
+                <endif>
+		DOM.setStyleAttribute(<blockitemname>[<itemno>].getElement(), "font-family", "<blockitemfontfamily>");
+		DOM.setStyleAttribute(<blockitemname>[<itemno>].getElement(), "font-size", "<blockitemfontsize>px");
+		<if(hasprompt)>
+		<blockitemname>Prompt[<itemno>] = new Label();
+		<blockitemname>Prompt[<itemno>].setText("<blockitem.prompt>");
+		DOM.setStyleAttribute(<blockitemname>Prompt[<itemno>].getElement(), "font-family", "<blockitempromptfontfamily>");
+		DOM.setStyleAttribute(<blockitemname>Prompt[<itemno>].getElement(), "font-size", "<blockitempromptfontsize>px");
+                <endif>
+		<if(canvasname)>
+		<canvasname>.add(<blockitemname>[<itemno>], <blockitemx>, <blockitemy>);
+		<if(hasprompt)>
+		<canvasname>.add(<blockitemname>Prompt[<itemno>], <promptx>, <prompty>);
+                <endif>
+                <endif>
+                <endif>
+                <if(isImageItemType)>
+                <if(initialize)>
+		final Image[] <blockitemname> = new Image[<displaycount>];
+		<if(promptfirst)>
+		final Label[] <blockitemname>Prompt = new Label[1];
+                <endif>
+		<if(promptall)>
+		final Label[] <blockitemname>Prompt = new Label[<displaycount>];
+                <endif>
+                <endif>
+		<blockitemname>[<itemno>] = new Image("icons/empty.png");
+		<blockitemname>[<itemno>].setSize("<blockitemwidth>", "<blockitemheight>");
+		<if(hasprompt)>
+		<blockitemname>Prompt[<itemno>] = new Label();
+		<blockitemname>Prompt[<itemno>].setText("<blockitem.prompt>");
+		DOM.setStyleAttribute(<blockitemname>Prompt[<itemno>].getElement(), "font-family", "<blockitempromptfontfamily>");
+		DOM.setStyleAttribute(<blockitemname>Prompt[<itemno>].getElement(), "font-size", "<blockitempromptfontsize>px");
+                <endif>
+		<if(canvasname)>
+		<canvasname>.add(<blockitemname>[<itemno>], <blockitemx>, <blockitemy>);
+		<if(hasprompt)>
+		<canvasname>.add(<blockitemname>Prompt[<itemno>], <promptx>, <prompty>);
+                <endif>
+                <endif>
+                <endif>
+                <if(isPushButtonItemType)>
+                <if(initialize)>
+		final Button[] <blockitemname> = new Button[<displaycount>];
+		<if(promptfirst)>
+		final Label[] <blockitemname>Prompt = new Label[1];
+                <endif>
+		<if(promptall)>
+		final Label[] <blockitemname>Prompt = new Label[<displaycount>];
+                <endif>
+                <endif>
+		<blockitemname>[<itemno>] = new Button("<buttonlabel>");
+		<blockitemname>[<itemno>].setSize("<blockitemwidth>", "<blockitemheight>");
+		DOM.setStyleAttribute(<blockitemname>[<itemno>].getElement(), "font-family", "<blockitemfontfamily>");
+		DOM.setStyleAttribute(<blockitemname>[<itemno>].getElement(), "font-size", "<blockitemfontsize>px");
+		<if(hasprompt)>
+		<blockitemname>Prompt[<itemno>] = new Label();
+		<blockitemname>Prompt[<itemno>].setText("<blockitem.prompt>");
+		DOM.setStyleAttribute(<blockitemname>Prompt[<itemno>].getElement(), "font-family", "<blockitempromptfontfamily>");
+		DOM.setStyleAttribute(<blockitemname>Prompt[<itemno>].getElement(), "font-size", "<blockitempromptfontsize>px");
+                <endif>
+		<if(canvasname)>
+		<canvasname>.add(<blockitemname>[<itemno>], <blockitemx>, <blockitemy>);
+		<if(hasprompt)>
+		<canvasname>.add(<blockitemname>Prompt[<itemno>], <promptx>, <prompty>);
+                <endif>
+                <endif>
+                <endif>                
+                <if(isListItemItemType)>
+                <if(initialize)>
+		final ListBox[] <blockitemname> = new ListBox[<displaycount>];
+		<if(promptfirst)>
+		final Label[] <blockitemname>Prompt = new Label[1];
+                <endif>
+		<if(promptall)>
+		final Label[] <blockitemname>Prompt = new Label[<displaycount>];
+                <endif>
+                <endif>
+		<blockitemname>[<itemno>] = new ListBox(<liststyle>);
+		<blockitemname>[<itemno>].setSize("<blockitemwidth>", "<blockitemheight>");
+                DOM.setStyleAttribute(<blockitemname>[<itemno>].getElement(), "font-family", "<blockitemfontfamily>");
+		DOM.setStyleAttribute(<blockitemname>[<itemno>].getElement(), "font-size", "<blockitemfontsize>px");
+		<if(hasprompt)>
+		<blockitemname>Prompt[<itemno>] = new Label();
+		<blockitemname>Prompt[<itemno>].setText("<blockitem.prompt>");
+		DOM.setStyleAttribute(<blockitemname>Prompt[<itemno>].getElement(), "font-family", "<blockitempromptfontfamily>");
+		DOM.setStyleAttribute(<blockitemname>Prompt[<itemno>].getElement(), "font-size", "<blockitempromptfontsize>px");
+                <endif>
+		<if(canvasname)>
+		<canvasname>.add(<blockitemname>[<itemno>], <blockitemx>, <blockitemy>);
+		<if(hasprompt)>
+		<canvasname>.add(<blockitemname>Prompt[<itemno>], <promptx>, <prompty>);
+                <endif>
+                <endif>
+                <endif>                  
+                <if(isCheckboxItemType)>
+                <if(initialize)>
+		final CheckBox[] <blockitemname> = new CheckBox[<displaycount>];
+		<if(promptfirst)>
+		final Label[] <blockitemname>Prompt = new Label[1];
+                <endif>
+		<if(promptall)>
+		final Label[] <blockitemname>Prompt = new Label[<displaycount>];
+                <endif>
+                <endif>
+		<blockitemname>[<itemno>] = new CheckBox("<checkboxItemLabel>");
+		<blockitemname>[<itemno>].setSize("<blockitemwidth>", "<blockitemheight>");
+		DOM.setStyleAttribute(<blockitemname>[<itemno>].getElement(), "font-family", "<blockitemfontfamily>");
+		DOM.setStyleAttribute(<blockitemname>[<itemno>].getElement(), "font-size", "<blockitemfontsize>px");
+		<if(hasprompt)>
+		<blockitemname>Prompt[<itemno>] = new Label();
+		<blockitemname>Prompt[<itemno>].setText("<blockitem.prompt>");
+		DOM.setStyleAttribute(<blockitemname>Prompt[<itemno>].getElement(), "font-family", "<blockitempromptfontfamily>");
+		DOM.setStyleAttribute(<blockitemname>Prompt[<itemno>].getElement(), "font-size", "<blockitempromptfontsize>px");
+                <endif>
+		<if(canvasname)>
+		<canvasname>.add(<blockitemname>[<itemno>], <blockitemx>, <blockitemy>);
+		<if(hasprompt)>
+		<canvasname>.add(<blockitemname>Prompt[<itemno>], <promptx>, <prompty>);
+                <endif>
+                <endif>
+                <endif>
+                <if(isRadioGroupItemType)>
+                <if(initialize)>
+		final RadioButton[][] <blockitemname> = new RadioButton[<displaycount>][<radiobuttonCount>];
+		<if(promptfirst)>
+		final Label[][] <blockitemname>Prompt = new Label[1][<radiobuttonCount>];
+                <endif>
+		<if(promptall)>
+		final Label[][] <blockitemname>Prompt = new Label[<displaycount>][<radiobuttonCount>];
+                <endif>
+                <endif>
+		<blockitemname>[<itemno>][<radiobuttonNo>]= new RadioButton("<radiobuttonGroup>","<radiobuttonItemLabel>");
+		<blockitemname>[<itemno>][<radiobuttonNo>].setSize("<blockitemwidth>", "<blockitemheight>");
+		DOM.setStyleAttribute(<blockitemname>[<itemno>][<radiobuttonNo>].getElement(), "font-family", "<blockitemfontfamily>");
+		DOM.setStyleAttribute(<blockitemname>[<itemno>][<radiobuttonNo>].getElement(), "font-size", "<blockitemfontsize>px");
+		<if(hasprompt)>
+		<blockitemname>Prompt[<itemno>][<radiobuttonNo>] = new Label();
+		<blockitemname>Prompt[<itemno>][<radiobuttonNo>].setText("<blockitem.prompt>");
+		DOM.setStyleAttribute(<blockitemname>Prompt[<itemno>][<radiobuttonNo>].getElement(), "font-family", "<blockitempromptfontfamily>");
+		DOM.setStyleAttribute(<blockitemname>Prompt[<itemno>][<radiobuttonNo>].getElement(), "font-size", "<blockitempromptfontsize>px");
+                <endif>
+		<if(canvasname)>
+		<canvasname>.add(<blockitemname>[<itemno>][<radiobuttonNo>], <blockitemx>, <blockitemy>);
+		<if(hasprompt)>
+		<canvasname>.add(<blockitemname>Prompt[<itemno>][<radiobuttonNo>], <promptx>, <prompty>);
+                <endif>
+                <endif>
+                <endif>                
+                <if(isHierarchicalTreeItemType)>
+                <if(initialize)>
+		final Tree[] <blockitemname> = new Tree[<displaycount>];
+                final ScrollPanel[] <blockitemname>Wrapper = new ScrollPanel[<displaycount>];
+		<if(promptfirst)>
+		final Label[] <blockitemname>Prompt = new Label[1];
+                <endif>
+		<if(promptall)>
+		final Label[] <blockitemname>Prompt = new Label[<displaycount>];
+                <endif>
+                <endif>
+		//<blockitemname>[<itemno>] = new Tree();
+		<blockitemname>[<itemno>] = createStaticTree();
+		<blockitemname>Wrapper[<itemno>] = new ScrollPanel(<blockitemname>[<itemno>]);
+		<blockitemname>Wrapper[<itemno>].setSize("<blockitemwidth>", "<blockitemheight>");
+		<blockitemname>Wrapper[<itemno>].setStyleName("TreeWrapper");
+		DOM.setStyleAttribute(<blockitemname>[<itemno>].getElement(), "font-family", "<blockitemfontfamily>");
+		DOM.setStyleAttribute(<blockitemname>[<itemno>].getElement(), "font-size", "<blockitemfontsize>px");
+		<if(hasprompt)>
+		<blockitemname>Prompt[<itemno>] = new Label();
+		<blockitemname>Prompt[<itemno>].setText("<blockitem.prompt>");
+		DOM.setStyleAttribute(<blockitemname>Prompt[<itemno>].getElement(), "font-family", "<blockitempromptfontfamily>");
+		DOM.setStyleAttribute(<blockitemname>Prompt[<itemno>].getElement(), "font-size", "<blockitempromptfontsize>px");
+                <endif>
+		<if(canvasname)>
+		<canvasname>.add(<blockitemname>Wrapper[<itemno>], <blockitemx>, <blockitemy>);
+		<if(hasprompt)>
+		<canvasname>.add(<blockitemname>Prompt[<itemno>], <promptx>, <prompty>);
+                <endif>
+                <endif>
+                <endif>                
+>>
+
+
+windowTpl(window,windowname,windowwidth,windowheight, windowx,windowy, primarycanvas,horizontaltoolbarcanvas,verticaltoolbarcanvas,horizontaltoolbarcanvasheigh,verticaltoolbarcanvaswidth,canvanscontent) ::= <<
+		final OracleFormsWindow <windowname> = new OracleFormsWindow();
+		<windowname>.getElement().setId("<windowname>");
+		<windowname>.setAnimationEnabled(true);
+		<windowname>.setTitle("<window.title>");
+		<windowname>.setSize("<windowwidth>", "<windowheight>");
+		<windowname>.setPopupPosition(<windowx>, <windowy> + 60);
+
+		<if(horizontaltoolbarcanvas)>
+		VerticalPanel <windowname>VerticalPanel = new VerticalPanel();
+                <endif>
+		<if(verticaltoolbarcanvas)>
+		HorizontalPanel <windowname>HorizontalPanel = new HorizontalPanel();
+		<endif>
+		
+		<if(horizontaltoolbarcanvas)>
+		<if(verticaltoolbarcanvas)>
+		<windowname>VerticalPanel.add(<horizontaltoolbarcanvas>);
+		<windowname>VerticalPanel.setCellHeight(<horizontaltoolbarcanvas>, "<horizontaltoolbarcanvasheigh>");
+		<windowname>VerticalPanel.add(<windowname>HorizontalPanel);
+		<windowname>HorizontalPanel.add(<verticaltoolbarcanvas>);
+		<windowname>HorizontalPanel.setCellWidth(<verticaltoolbarcanvas>, "<verticaltoolbarcanvaswidth>");
+		<windowname>HorizontalPanel.add(<primarycanvas>);
+ 		<windowname>.addComponent(<windowname>VerticalPanel,0,0);                
+                <endif>
+                <if(!verticaltoolbarcanvas)>
+                <windowname>VerticalPanel.add(<horizontaltoolbarcanvas>);
+		<windowname>VerticalPanel.setCellHeight(<horizontaltoolbarcanvas>, "<horizontaltoolbarcanvasheigh>");
+		<windowname>VerticalPanel.add(<primarycanvas>); 
+ 		<windowname>.addComponent(<windowname>VerticalPanel,0,0);   
+                <endif>
+                <endif>
+                <if(!horizontaltoolbarcanvas)>
+                <if(verticaltoolbarcanvas)>
+		<windowname>HorizontalPanel.add(<verticaltoolbarcanvas>);
+		<windowname>HorizontalPanel.setCellWidth(<verticaltoolbarcanvas>, "<verticaltoolbarcanvaswidth>");
+		<windowname>HorizontalPanel.add(<primarycanvas>);
+ 		<windowname>.addComponent(<windowname>HorizontalPanel,0,0);                                
+                <endif>
+                <if(!verticaltoolbarcanvas)>
+ 		<windowname>.addComponent(<primarycanvas>,0,0);                                                
+                <endif>
+                <endif>
+		<canvanscontent>
+		<windowname>.show(); 
+
+>>
+
+
+
+

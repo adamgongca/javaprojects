@@ -1,0 +1,278 @@
+group htmlcss;
+
+htmlpageTpl(cssfilename,jsfilename) ::= <<
+&#60!DOCTYPE html &#62
+&#60!-- The DOCTYPE declaration above will set the --&#62
+&#60!-- browser's rendering engine into --&#62
+&#60!-- "Standards Mode". Replacing this declaration --&#62
+&#60!-- with a "Quirks Mode" doctype may lead to some --&#62
+&#60!-- differences in layout. --&#62
+
+&#60html&#62
+ &#60head&#62
+ &#60meta http-equiv="content-type" content="text/html; charset=UTF-8"&#62
+
+ &#60!-- --&#62
+ &#60!-- Consider inlining CSS to reduce the number of requested files --&#62
+ &#60!-- --&#62
+ &#60link type="text/css" rel="stylesheet" href="<cssfilename>"&#62
+
+ &#60!-- --&#62
+ &#60!-- Any title is fine --&#62
+ &#60!-- --&#62
+ &#60title&#62Oracle Forms Demo&#60/title&#62
+
+ &#60!-- --&#62
+ &#60!-- This script loads your compiled module. --&#62
+ &#60!-- If you add any GWT meta tags, they must --&#62
+ &#60!-- be added before this line. --&#62
+ &#60!-- --&#62
+ &#60script type="text/javascript" language="javascript" src="<jsfilename>"&#62&#60/script&#62
+ &#60/head&#62
+
+ &#60!-- --&#62
+ &#60!-- The body can have arbitrary html, or --&#62
+ &#60!-- you can leave the body empty if you want --&#62
+ &#60!-- to create a completely dynamic UI. --&#62
+ &#60!-- --&#62
+ &#60body style="margin:0px"&#62
+
+ &#60!-- OPTIONAL: include this if you want history support --&#62
+ &#60iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"&#62&#60/iframe&#62
+ 
+ &#60!-- RECOMMENDED if your web app will not function without JavaScript enabled --&#62
+ &#60noscript&#62
+ &#60div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif"&#62
+ Your web browser must have JavaScript enabled
+ in order for this application to display correctly.
+ &#60/div&#62
+ &#60/noscript&#62
+
+&#60table style="width: 100%" cellspacing="0" cellpadding="0"&#62
+ &#60tr&#62
+  &#60td class="style1"&#62
+  &#60table style="width: 100%" cellspacing="0" cellpadding="0"&#62
+   &#60tr&#62
+    &#60td id="menuContainer"&#62&#60/td&#62&#60td&#62&nbsp;&#60/td&#62
+    &#60td style="width: 200px" align="right"&#62
+    &#60img src="icons/etalonlogo.gif" width="200" height="28" /&#62&#60/td&#62
+   &#60/tr&#62
+  &#60/table&#62
+  &#60/td&#62
+ &#60/tr&#62
+ &#60tr&#62
+  &#60td class="style1"&#62
+  &#60table style="width: 100%" cellspacing="0" cellpadding="0" &#62
+   &#60tr style="height: 27px"&#62
+    &#60td style="width: 12px" align="right" width="12px" class="style12"&#62&nbsp;&#60/td&#62
+    &#60td class="style2" width="*" id="smartbarContainer"&#62&#60/td&#62
+    &#60td style="width: 12px" align="left" width="12px" class="style13"&#62&nbsp;&#60/td&#62
+   &#60/tr&#62
+  &#60/table&#62
+  &#60/td&#62
+ &#60/tr&#62
+ &#60tr&#62
+  &#60td&#62
+  &#60div id="WindowContainer"; style="background: url('icons/bgnd.gif') no-repeat; width: 800px; height: 440px"&#62
+  &#60/div&#62&#60/td&#62
+ &#60/tr&#62
+ &#60tr&#62
+  &#60td class="style1"&#62
+  &#60table style="width: 100%" cellspacing="0" cellpadding="0"&#62
+   &#60tr style="height: 8px"&#62
+    &#60td style="width: 10px; height: 8px;" class="style8"&#62&#60/td&#62
+    &#60td class="style3"&#62&#60/td&#62
+    &#60td style="width: 10px; height: 8px;" class="style10"&#62&#60/td&#62
+   &#60/tr&#62
+   &#60tr style="height: 20px"&#62
+    &#60td style="width: 10px" class="style4"&#62
+    &#60/td&#62
+    &#60td&#62
+    &#60table style="width: 100%" cellspacing="0" cellpadding="0"&#62
+     &#60tr&#62
+      &#60td id="StateMessage1"&#62&nbsp;&#60/td&#62
+      &#60td style="width: 4px"&#62&#60img src="icons/separator-2.gif" width="4" height="16" /&#62&#60/td&#62
+
+      &#60td style="width: 20px"&#62&nbsp;&#60/td&#62
+     &#60/tr&#62
+    &#60/table&#62
+    &#60/td&#62
+    &#60td style="width: 10px" class="style7"&#62
+    &#60/td&#62
+   &#60/tr&#62
+   &#60tr style="height: 3px"&#62
+    &#60td style="width: 10px" class="style4"&#62&#60/td&#62
+    &#60td class="style6"&#62&#60/td&#62
+    &#60td style="width: 10px; height: 3px;" class="style7"&#62&#60/td&#62
+   &#60/tr&#62
+   &#60tr style="height: 20px"&#62
+    &#60td style="width: 10px" class="style4"&#62&#60/td&#62
+    &#60td&#62
+    &#60table style="width: 100%" cellspacing="0" cellpadding="0"&#62
+     &#60tr&#62
+      &#60td style="width: 120px" id="StateMessage2"&#62&nbsp;&#60/td&#62
+      &#60td style="width: 4px"&#62&#60img src="icons/separator-2.gif" width="4" height="16" /&#62&#60/td&#62
+      &#60td id="StateMessage3" style="width: 20px"&#62&nbsp;&#60/td&#62
+      &#60td style="width: 4px"&#62&#60img src="icons/separator-2.gif" width="4" height="16" /&#62&#60/td&#62
+      &#60td id="StateMessage4" style="width: 80px"&#62&nbsp;&#60/td&#62
+      &#60td style="width: 4px"&#62&#60img src="icons/separator-2.gif" width="4" height="16" /&#62&#60/td&#62
+      &#60td id="StateMessage5" style="width: 80px"&#62&nbsp;&#60/td&#62
+      &#60td style="width: 4px"&#62&#60img src="icons/separator-2.gif" width="4" height="16" /&#62&#60/td&#62
+      &#60td id="StateMessage6" &#62&nbsp;&#60/td&#62
+      &#60td style="width: 4px"&#62&#60img src="icons/separator-2.gif" width="4" height="16" /&#62&#60/td&#62
+      &#60td style="width: 300px"&#62&#60span style="font-family: Arial; font-size: small; width: 300px"&#62Oracle Forms Application To .Net Platform V1.0&#60/span&#62&#60/td&#62
+     &#60/tr&#62
+    &#60/table&#62
+    &#60/td&#62
+    &#60td style="width: 10px; height: 20px;" class="style7"&#62
+    &#60/td&#62
+   &#60/tr&#62
+   &#60tr style="height: 12px"&#62
+    &#60td style="width: 10px; height: 12px;" class="style9" &#62&#60/td&#62
+&#60td class="style5"&#62
+&#60/td&#62
+&#60td style="width: 10px; height: 12px;" class="style11"&#62&#60/td&#62
+&#60/tr&#62
+&#60/table&#62
+&#60/td&#62
+&#60/tr&#62
+&#60/table&#62
+&#60/body&#62
+&#60/html&#62
+
+>>
+
+
+
+cssfileTpl(nullparameter) ::= <<
+/** Add css rules here for your application. */
+
+
+.style1 {
+ background-color: #666666;
+}
+.style2 {
+ background-image: url('icons/bar-bg.gif');
+ background-repeat: repeat-x;
+}
+.style3 {
+ background-image: url('icons/tt-1.gif');
+}
+.style4 {
+ background-image: url('icons/ll-1.gif');
+}
+.style5 {
+ background-image: url('icons/bb-1.gif');
+}
+.style6 {
+ background-image: url('icons/mm-1.gif');
+}
+.style7 {
+ background-image: url('icons/rr-1.gif');
+}
+.style8 {
+ background-image: url('icons/lt-1.gif');
+}
+.style9 {
+ background-image: url('icons/lb-1.gif');
+}
+.style10 {
+ background-image: url('icons/rt-1.gif');
+}
+.style11 {
+ background-image: url('icons/rb-1.gif');
+}
+.style12 {
+ background: url('icons/bar-left.gif') no-repeat 0px 0px;
+ al
+}
+.style13 {
+ background: url('icons/bar-right.gif') no-repeat 0px 0px;
+}
+
+
+.gwt-OracleFormsWindow .Caption {
+ background: #e3e8f3 url(images/hborder.png) repeat-x 0px -2003px;
+ padding: 4px 4px 4px 8px;
+ cursor: default;
+ border-bottom: 1px solid #bbbbbb;
+ border-top: 5px solid #d0e4f6;
+}
+.gwt-OracleFormsWindow .dialogContent {
+}
+.gwt-OracleFormsWindow .dialogMiddleCenter {
+ padding: 3px;
+ background: white;
+}
+.gwt-OracleFormsWindow .dialogBottomCenter {
+ background: url(images/hborder.png) repeat-x 0px -4px;
+ -background: url(images/hborder_ie6.png) repeat-x 0px -4px;
+}
+.gwt-OracleFormsWindow .dialogMiddleLeft {
+ background: url(images/vborder.png) repeat-y;
+}
+.gwt-OracleFormsWindow .dialogMiddleRight {
+ background: url(images/vborder.png) repeat-y -4px 0px;
+ -background: url(images/vborder_ie6.png) repeat-y -4px 0px;
+}
+.gwt-OracleFormsWindow .dialogTopLeftInner {
+ width: 5px;
+ zoom: 1;
+}
+.gwt-OracleFormsWindow .dialogTopRightInner {
+ width: 8px;
+ zoom: 1;
+}
+.gwt-OracleFormsWindow .dialogBottomLeftInner {
+ width: 5px;
+ height: 8px;
+ zoom: 1;
+}
+.gwt-OracleFormsWindow .dialogBottomRightInner {
+ width: 5px;
+ height: 8px;
+ zoom: 1;
+}
+.gwt-OracleFormsWindow .dialogTopLeft {
+ background: url(images/corner.png) no-repeat -13px 0px;
+ -background: url(images/corner_ie6.png) no-repeat -13px 0px;
+}
+.gwt-OracleFormsWindow .dialogTopRight {
+ background: url(images/corner.png) no-repeat -18px 0px;
+ -background: url(images/corner_ie6.png) no-repeat -18px 0px;
+}
+.gwt-OracleFormsWindow .dialogBottomLeft {
+ background: url(images/corner.png) no-repeat 0px -15px;
+ -background: url(images/corner_ie6.png) no-repeat 0px -15px;
+}
+.gwt-OracleFormsWindow .dialogBottomRight {
+ background: url(images/corner.png) no-repeat -5px -15px;
+ -background: url(images/corner_ie6.png) no-repeat -5px -15px;
+}
+* html .gwt-OracleFormsWindow .dialogTopLeftInner {
+ width: 5px;
+ overflow: hidden;
+}
+* html .gwt-OracleFormsWindow .dialogTopRightInner {
+ width: 8px;
+ overflow: hidden;
+}
+* html .gwt-OracleFormsWindow .dialogBottomLeftInner {
+ width: 5px;
+ height: 8px;
+ overflow: hidden;
+}
+* html .gwt-OracleFormsWindow .dialogBottomRightInner {
+ width: 8px;
+ height: 8px;
+ overflow: hidden;
+}
+.abcd {
+	 background: url(images/titlebar.png) repeat;
+}
+
+.efg {
+	 background-color: #364C4C;
+}
+
+>>

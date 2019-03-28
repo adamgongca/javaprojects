@@ -1,0 +1,752 @@
+group supportedjavaclass;
+
+oracleformswindowTpl(packageprefix) ::= <<
+package <packageprefix>client;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CellPanel;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.CellPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
+import static com.google.gwt.user.client.ui.HasHorizontalAlignment.ALIGN_CENTER;
+import static com.google.gwt.user.client.ui.HasHorizontalAlignment.ALIGN_RIGHT;
+import static com.google.gwt.user.client.ui.HasHorizontalAlignment.ALIGN_LEFT;
+
+public class OracleFormsWindow extends DialogBox  {
+	private final static int leftOffset = 10;
+	private final static int topOffset = 45;
+        
+        private Button logoButton = new Button();
+	private TextBox titleLabel = new TextBox();
+	private Button titleEmpty = new Button();
+	private Button minmizeButton = new Button();
+	private Button maximizeButton = new Button();
+	private Button closeButton = new Button();
+	private HorizontalPanel titlePanel = new HorizontalPanel();
+	private HorizontalPanel toolsPanel = new HorizontalPanel();
+	private VerticalPanel vPanel = new VerticalPanel();
+	private AbsolutePanel contentPanel = new AbsolutePanel(); 
+	
+	public OracleFormsWindow(){
+		super(false, false);
+		setStyleName("gwt-oracleFormsWindow");
+		titlePanel.setStyleName("WindowTitle");
+		logoButton.setStyleName("LogoButton");
+		titleLabel.setStyleName("TitleLabel");
+		titleLabel.setEnabled(false);
+		titleEmpty.setStyleName("TitleEmpty");
+		minmizeButton.setStyleName("MinmizeButton");
+		maximizeButton.setStyleName("MaximizeButton");		
+		closeButton.setStyleName("CloseButton");
+		titlePanel.setSpacing(0);
+		titlePanel.add(logoButton);
+		titlePanel.add(titleLabel);
+		titlePanel.add(titleEmpty);
+		toolsPanel.add(minmizeButton);
+		toolsPanel.add(maximizeButton);
+		toolsPanel.add(closeButton);
+		titlePanel.add(toolsPanel);
+		titleLabel.setText("Oracle Forms Window");
+		titlePanel.setCellWidth(logoButton, "20");
+		titlePanel.setCellWidth(titleLabel, "150");
+		titlePanel.setCellWidth(titleEmpty, "180");
+		toolsPanel.setCellWidth(minmizeButton, "20");
+		toolsPanel.setCellWidth(maximizeButton, "20");
+		toolsPanel.setCellWidth(closeButton, "20");
+		titlePanel.setCellWidth(toolsPanel, "60");
+		
+		titlePanel.setCellHorizontalAlignment(titleLabel, ALIGN_LEFT);
+		titlePanel.setCellHorizontalAlignment(toolsPanel, ALIGN_RIGHT);
+
+		DOM.setStyleAttribute(contentPanel.getElement(), "position", "");
+				
+	    logoButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				Window.alert("You click!");
+			}
+		});		
+	    
+	    closeButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				OracleFormsWindow.this.hide();
+			}
+		});		
+	    
+		
+	    vPanel.add(titlePanel);
+	    vPanel.add(contentPanel);
+	    vPanel.setCellHeight(titlePanel, "20");
+		super.setWidget(vPanel);
+	    
+	}
+	
+	@Override	
+	public void setSize(String width, String height){
+		contentPanel.setSize(width, height);
+		titlePanel.setWidth(width);
+		Integer tmpI = new Integer(Integer.parseInt(width.replaceAll("px", "")) - 80 - 150);
+		if (tmpI&#601) tmpI = 1;
+		titlePanel.setCellWidth(titleEmpty, tmpI.toString());
+		vPanel.setCellHeight(contentPanel, height);
+	}
+	
+	@Override	
+	public void setTitle(String title){
+		titleLabel.setText(title);
+	}
+	
+	public void addComponent(Widget w, int left, int top){
+		contentPanel.add(w,left + leftOffset ,top + topOffset);
+	}
+}
+
+>>
+
+oraclformssupportfunctionsTpl(packageprefix) ::= <<
+package <packageprefix>client;
+
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.RootPanel;
+
+public class OracleFormsSupportFunctions {
+
+	public native static void WindowMaximize() /*-{
+		$wnd.moveTo(0,0)
+		$wnd.resizeTo(screen.width,screen.height)
+	}-*/;
+
+	public final static ResizeHandler defaultResizeHandler = new ResizeHandler(){
+		public void onResize(ResizeEvent event) {
+			int h = Window.getClientHeight();
+			RootPanel.get("WindowContainer").setHeight(new Integer(h -128).toString());
+		}};
+
+	
+}
+
+>>
+
+oracleformssmartbarpanelTpl(packageprefix) ::= <<
+package <packageprefix>client;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.VerticalPanel;
+
+public class OracleFormsSmartbarPanel extends HorizontalPanel {
+	private Button saveButton = new Button();
+	private Button printButton = new Button();
+	private Button separatorButton1 = new Button();
+	private Button exitButton = new Button();
+	private Button separatorButton2 = new Button();
+	private Button cutButton = new Button();
+	private Button copyButton = new Button();
+	private Button pasteButton = new Button();
+	private Button separatorButton3 = new Button();
+	private Button entqryButton = new Button();
+	private Button exeqryButton = new Button();
+	private Button canqryButton = new Button();
+	private Button separatorButton4 = new Button();
+	private Button prvblkButton = new Button();
+	private Button prvrecButton = new Button();
+	private Button nxtrecButton = new Button();
+	private Button nxtblkButton = new Button();
+	private Button separatorButton5 = new Button();
+	private Button insrecButton = new Button();
+	private Button delrecButton = new Button();
+	private Button lockrecButton = new Button();
+	private Button separatorButton6 = new Button();
+	private Button helpButton = new Button();
+	
+	public OracleFormsSmartbarPanel(){
+		this.setStyleName("gwt-oracleFormsSmartbar");
+		this.setBorderWidth(0);
+		this.setSpacing(0);
+		saveButton.setStyleName("SaveButton");
+		printButton.setStyleName("PrintButton");
+		separatorButton1.setStyleName("SeparatorButton");
+		separatorButton1.setEnabled(false);
+		exitButton.setStyleName("ExitButton");
+		separatorButton2.setStyleName("SeparatorButton");
+		separatorButton2.setEnabled(false);
+		cutButton.setStyleName("CutButton");
+		copyButton.setStyleName("CopyButton");
+		pasteButton.setStyleName("PasteButton");
+		separatorButton3.setStyleName("SeparatorButton");
+		separatorButton3.setEnabled(false);
+		entqryButton.setStyleName("EntqryButton");
+		exeqryButton.setStyleName("ExeqryButton");
+		canqryButton.setStyleName("CanqryButton");
+		separatorButton4.setStyleName("SeparatorButton");
+		separatorButton4.setEnabled(false);
+		prvblkButton.setStyleName("PrvblkButton");
+		prvrecButton.setStyleName("PrvrecButton");
+		nxtrecButton.setStyleName("NxtrecButton");
+		nxtblkButton.setStyleName("NxtblkButton");
+		separatorButton5.setStyleName("SeparatorButton");
+		separatorButton5.setEnabled(false);
+		insrecButton.setStyleName("InsrecButton");
+		delrecButton.setStyleName("DelrecButton");
+		lockrecButton.setStyleName("LockrecButton");
+		separatorButton6.setStyleName("SeparatorButton");
+		separatorButton6.setEnabled(false);
+		helpButton.setStyleName("HelpButton");	
+		this.add(saveButton);
+		this.add(printButton);
+		this.add(separatorButton1);
+		this.add(exitButton);
+		this.add(separatorButton2);
+		this.add(cutButton);
+		this.add(copyButton);
+		this.add(pasteButton);
+		this.add(separatorButton3);
+		this.add(entqryButton);
+		this.add(exeqryButton);
+		this.add(canqryButton);
+		this.add(separatorButton4);
+		this.add(prvblkButton);
+		this.add(prvrecButton);
+		this.add(nxtrecButton);
+		this.add(nxtblkButton);
+		this.add(separatorButton5);
+		this.add(insrecButton);
+		this.add(delrecButton);
+		this.add(lockrecButton);
+		this.add(separatorButton6);
+		this.add(helpButton);
+		
+		saveButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//TODO
+				Window.alert("Save button is clicked");
+			}
+		});
+		
+		printButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//TODO
+				Window.alert("Print button is clicked");
+			}
+		});		
+		
+		exitButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				closeApplication();
+			}
+		});		
+		
+		cutButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//TODO
+				Window.alert("Cut button is clicked");
+				
+			}
+		});		
+		
+		copyButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//TODO
+				Window.alert("Copy button is clicked");
+				
+			}
+		});		
+		
+		pasteButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//TODO
+				Window.alert("Paste button is clicked");
+				
+			}
+		});		
+		
+		entqryButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//TODO
+				Window.alert("Enter Query button is clicked");
+				
+			}
+		});		
+		
+		exeqryButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//TODO
+				Window.alert("Excute Query button is clicked");
+				
+			}
+		});		
+		
+		canqryButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//TODO
+				Window.alert("Cancel Query button is clicked");
+				
+			}
+		});		
+		
+		prvblkButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//TODO
+				Window.alert("Previous Block button is clicked");
+				
+			}
+		});		
+		
+		prvrecButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//TODO
+				Window.alert("Previous Record button is clicked");
+				
+			}
+		});		
+		
+		nxtrecButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//TODO
+				Window.alert("Next Record button is clicked");
+				
+			}
+		});		
+		
+		nxtblkButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//TODO
+				Window.alert("Next Block button is clicked");
+				
+			}
+		});		
+		
+		insrecButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//TODO
+				Window.alert("Insert Record button is clicked");
+				
+			}
+		});	
+		
+		delrecButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//TODO
+				Window.alert("Delete Record button is clicked");
+				
+			}
+		});	
+		
+		lockrecButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				//TODO
+				Window.alert("Lock Record button is clicked");
+				
+			}
+		});	
+		
+		helpButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+			    final DialogBox dialogBox = createDialogBox();
+			    dialogBox.setGlassEnabled(true);
+			    dialogBox.setAnimationEnabled(true);
+	            dialogBox.center();
+	            dialogBox.show();				
+			}
+		});		
+		
+	}
+	
+	
+	  private DialogBox createDialogBox() {
+		    // Create a dialog box and set the caption text
+		    final DialogBox dialogBox = new DialogBox();
+		    dialogBox.ensureDebugId("cwDialogBox");
+		    dialogBox.setText("About ...");
+
+		    // Create a table to layout the content
+		    VerticalPanel dialogContents = new VerticalPanel();
+		    dialogContents.setSpacing(4);
+		    dialogBox.setWidget(dialogContents);
+
+		    // Add some text to the top of the dialog
+		    HTML details = new HTML("Auther: Adam Gong &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#60a href='http://www.adam-software.net' target='_new'&#62www.adam-software.net&#60/a&#62&#60Br&#62Version: 1.0 &nbsp;&nbsp;&nbsp;&nbsp;Date: August 5, 2010&#60br&#62(c)Copyright: Etalon Software & Cosulting Company,  All rights reserved.");
+		    dialogContents.add(details);
+		    dialogContents.setCellHorizontalAlignment(details,
+		        HasHorizontalAlignment.ALIGN_LEFT);
+
+		    // Add an image to the dialog
+		    Image image = new Image("icons/splash.gif");
+		    dialogContents.add(image);
+		    dialogContents.setCellHorizontalAlignment(image,
+		        HasHorizontalAlignment.ALIGN_CENTER);
+
+		    // Add a close button at the bottom of the dialog
+		    Button closeButton = new Button("Close",
+		        new ClickHandler() {
+		          public void onClick(ClickEvent event) {
+		            dialogBox.hide();
+		          }
+		        });
+		    dialogContents.add(closeButton);
+		    if (LocaleInfo.getCurrentLocale().isRTL()) {
+		      dialogContents.setCellHorizontalAlignment(closeButton,
+		          HasHorizontalAlignment.ALIGN_LEFT);
+
+		    } else {
+		      dialogContents.setCellHorizontalAlignment(closeButton,
+		          HasHorizontalAlignment.ALIGN_RIGHT);
+		    }
+
+		    // Return the dialog box
+		    return dialogBox;
+		  }
+	
+	  private native void closeApplication() /*-{
+			$wnd.close();
+	}-*/;
+
+}
+
+>>
+
+
+oracleformsdefaultmenupanelTpl(packageprefix) ::= <<
+package <packageprefix>client;
+
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.SimplePanel;
+
+public class OracleFormsDefaultMenuPanel extends SimplePanel {
+	
+	 public Command cmdSave = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Save'!");
+	      }
+	    };
+	    
+	 public Command cmdClearAll = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Clear All'!");
+	      }
+	    };
+	    
+	 public Command cmdPrint = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Print'!");
+	      }
+	    };
+	    
+	 public Command cmdExit = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Exit'!");
+	      }
+	    };
+	    
+	 public Command cmdCut = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Cut'!");
+	      }
+	    };
+	    
+	 public Command cmdCopy = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Copy'!");
+	      }
+	    };
+	    
+	 public Command cmdPaste = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Paste'!");
+	      }
+	    };
+	    
+	 public Command cmdEdit = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Edit'!");
+	      }
+	    };
+	    
+	 public Command cmdDisplayList = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Display List'!");
+	      }
+	    };
+	    
+	 public Command cmdEnter = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Enter'!");
+	      }
+	    };
+	    
+	 public Command cmdExecute = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Execute'!");
+	      }
+	    };
+	    
+	 public Command cmdCancel = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Cancel'!");
+	      }
+	    };
+	    
+	 public Command cmdLastCriteria = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'LastCriteria'!");
+	      }
+	    };
+	    
+	 public Command cmdCountHits = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Count Hits'!");
+	      }
+	    };
+	    
+	 public Command cmdFetchNextSet = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Fetch Next Set'!");
+	      }
+	    };
+	    
+	 public Command cmdPreviousBlock = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Previous'!");
+	      }
+	    };
+	    
+	 public Command cmdNextBlock = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Next'!");
+	      }
+	    };
+	    
+	 public Command cmdClearBlock = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Clear'!");
+	      }
+	    };
+	    
+	 public Command cmdPreviousRecord = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Previous Record'!");
+	      }
+	    };
+	    
+	 public Command cmdNextRecord = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Next Record'!");
+	      }
+	    };
+	    
+	 public Command cmdScrollUpRecord = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Scroll Up Record'!");
+	      }
+	    };
+	    
+	 public Command cmdScrollDownRecord = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Scroll Down Record'!");
+	      }
+	    };
+	    
+	 public Command cmdInsertRecord = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Insert Record'!");
+	      }
+	    };
+	    
+	 public Command cmdRemoveRecord = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Remove Record'!");
+	      }
+	    };
+	    
+	 public Command cmdLockRecord = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Lock Record'!");
+	      }
+	    };
+	    
+	 public Command cmdDuplicateRecord = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Duplicate Record'!");
+	      }
+	    };
+	    
+	 public Command cmdClearRecord = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Clear Record'!");
+	      }
+	    };
+	    
+	 public Command cmdPreviousField = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Previous Field'!");
+	      }
+	    };
+	    
+	 public Command cmdNextField = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Next Field'!");
+	      }
+	    };
+	    
+	 public Command cmdClearField = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Clear Field'!");
+	      }
+	    };
+	    
+	 public Command cmdDuplicateField = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Duplicate Field'!");
+	      }
+	    };
+	    
+	 public Command cmdHelp = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Help'!");
+	      }
+	    };
+	    
+	 public Command cmdKeys = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Keys'!");
+	      }
+	    };
+	    
+	 public Command cmdDisplayError = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Display Error'!");
+	      }
+	    };
+	    
+	 public Command cmdCascadeWindow = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Cascade Window'!");
+	      }
+	    };
+	    
+	 public Command cmdTileHorizontallyWindow = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Tile Horizontally Window'!");
+	      }
+	    };
+	    
+	 public Command cmdTileVerticallyWindow = new Command() {
+	      public void execute() {
+	        Window.alert("You selected 'Tile Vertically Window'!");
+	      }
+	    };
+
+	 public Command cmdWiddow = new Command() {
+	      public void execute() {
+	        Window.alert("You selected window xxx !");
+	      }
+	    };
+  
+                      
+	 public OracleFormsDefaultMenuPanel(){
+		    MenuBar actionMenu = new MenuBar(true);
+		    actionMenu.addItem("Save", cmdSave);
+		    actionMenu.addItem("Clear All", cmdClearAll);
+		    actionMenu.addSeparator();
+		    actionMenu.addItem("Print",cmdPrint);
+		    actionMenu.addSeparator();
+		    actionMenu.addItem("Exit", cmdExit);
+
+		    MenuBar editMenu = new MenuBar(true);
+		    editMenu.addItem("Cut",cmdCut);
+		    editMenu.addItem("Copy", cmdCopy);
+		    editMenu.addItem("Paste", cmdPaste);
+		    editMenu.addSeparator();
+		    editMenu.addItem("Edit",cmdEdit);
+		    editMenu.addItem("Display List...",cmdDisplayList);
+
+		    MenuBar queryMenu = new MenuBar(true);
+		    queryMenu.addItem("Enter", cmdEnter);
+		    queryMenu.addItem("Execute", cmdExecute);
+		    queryMenu.addItem("Cancel", cmdCancel);
+		    queryMenu.addSeparator();
+		    queryMenu.addItem("Last Criteria",cmdLastCriteria);
+		    queryMenu.addItem("Count Hits",cmdCountHits);
+		    queryMenu.addItem("Fetch Next Set",cmdFetchNextSet);
+
+		    MenuBar blockMenu = new MenuBar(true);
+		    blockMenu.addItem("Previous", cmdPreviousBlock);
+		    blockMenu.addItem("Next", cmdNextBlock);
+		    blockMenu.addItem("Clear", cmdClearBlock);
+		    
+		    MenuBar recordMenu = new MenuBar(true);
+		    recordMenu.addItem("Previous", cmdPreviousRecord);
+		    recordMenu.addItem("Next", cmdNextRecord);
+		    recordMenu.addItem("Scroll Up", cmdScrollUpRecord);
+		    recordMenu.addItem("Scroll Down", cmdScrollDownRecord);
+		    recordMenu.addSeparator();
+		    recordMenu.addItem("Insert",cmdInsertRecord);
+		    recordMenu.addItem("Remove",cmdRemoveRecord);
+		    recordMenu.addItem("Lock",cmdLockRecord);
+		    recordMenu.addSeparator();
+		    recordMenu.addItem("Duplicate",cmdDuplicateRecord);
+		    recordMenu.addItem("Clear",cmdClearRecord);		    
+		    
+		    
+		    MenuBar fieldMenu = new MenuBar(true);
+		    fieldMenu.addItem("Previous", cmdPreviousField);
+		    fieldMenu.addItem("Next", cmdNextField);
+		    fieldMenu.addItem("Clear", cmdClearField);
+		    fieldMenu.addSeparator();
+		    fieldMenu.addItem("Duplicate",cmdDuplicateField);		    
+		    
+		    MenuBar helpMenu = new MenuBar(true);
+		    helpMenu.addItem("Help", cmdHelp);
+		    helpMenu.addSeparator();
+		    helpMenu.addItem("Keys",cmdKeys);		    
+		    helpMenu.addItem("Display Error", cmdDisplayError);
+		    
+		    MenuBar windowMenu = new MenuBar(true);
+		    windowMenu.addItem("Cascade", cmdCascadeWindow);
+		    windowMenu.addItem("Tile Horizontally", cmdTileHorizontallyWindow);
+		    windowMenu.addItem("Tile Vertically", cmdTileVerticallyWindow);
+		    windowMenu.addSeparator();
+		    windowMenu.addItem("Window1",cmdWiddow);		    
+		    
+		    
+		    MenuBar menu = new MenuBar();
+		    menu.addItem("Action", actionMenu);
+		    menu.addItem("Edit", editMenu);
+		    menu.addItem("Query", queryMenu);
+		    menu.addItem("Block", blockMenu);
+		    menu.addItem("Record", recordMenu);
+		    menu.addItem("Field", fieldMenu);
+		    menu.addItem("Help", helpMenu);
+		    menu.addItem("Window", windowMenu);
+		 
+		    this.add(menu);
+	 }
+
+	
+}
+
+>>
